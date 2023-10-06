@@ -1,5 +1,5 @@
 Name:           ipxe-reconfigure
-Version:        0.2
+Version:        0.3
 Release:        1%{?dist}
 Summary:        Reconfigures the ipxe boot script upon kernel update
 
@@ -41,5 +41,8 @@ ipxe-reconfigure
 
 
 %changelog
+* Fri Oct 06 2023 Shaun Keys <mariobuddy@gmail.com> 0.3-1
+- new package built with tito
+
 * Mon Sep 25 2023 Shaun Keys
 - 
