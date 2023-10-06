@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+
+case "$COMMAND" in
+    add|remove)
+        ipxe-reconfigure
+        ;;
+    *)
+        ;;
+esac

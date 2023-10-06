@@ -1,0 +1,61 @@
+#!/usr/bin/bash
+
+boot_dir="/boot"
+bls_dir="/boot/loader/entries"
+out_file="${boot_dir}/main.ipxe"
+
+if [[ "$(whoami)" != "root" ]]; then
+	echo "Must be run as root." 1>&2
+	exit 1
+fi
+
+bootloader_entries=($((for file in "${bls_dir}/"*.conf; do basename -s .conf "$file"; done) | sort -Vr))
+menu_entries=()
+boot_entries=()
+
+for entry in "${bootloader_entries[@]}"; do
+	title=""
+	initrd=""
+	linux=""
+	options=""
+	while read line; do
+		record="$(echo "${line}" | awk '{ print $1 }')"
+		value="$(echo "${line}" | sed -E 's/^\w+ +//')"
+		case "${record}" in
+			"title")
+				title="${value}"
+				;;
+			"initrd")
+				# Cut used to trim out optional variables and such. This needs a better solution,
+				# but I just want something that works for now
+				initrd="$(echo "$value" | sed -E 's/ \$\w+//g')"
+				chmod 664 "${boot_dir}${initrd}"
+				;;
+			"linux")
+				linux="${value}"
+				chmod 664 "${boot_dir}${linux}"
+				;;
+			"options")
+				options="$(echo "$value" | sed -E 's/ \$\w+//g')"
+				;;
+		esac
+	done < "${bls_dir}/${entry}.conf"
+	menu_entries+=( "item ${entry} ${title}" )
+	boot_entries+=( ":${entry}\nkernel \${boot-dir}${linux} ${options} \${cmdline}\ninitrd \${boot-dir}${initrd}\nboot" )
+done
+
+(
+	echo '#!ipxe'
+	echo
+	echo 'menu Please select a boot option'
+	for item in "${menu_entries[@]}"; do
+		echo "${item}"
+	done
+	echo "choose --timeout 3000 target && goto \${target}"
+	echo
+	for item in "${boot_entries[@]}"; do
+		echo -e "${item}"
+		echo
+	done
+) > "${out_file}"
+chmod 664 "${out_file}"
