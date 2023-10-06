@@ -1,11 +1,11 @@
 Name:           ipxe-reconfigure
-Version:        0.3
+Version:        0.4
 Release:        1%{?dist}
 Summary:        Reconfigures the ipxe boot script upon kernel update
 
 License:        Unlicense
 URL:            N/A
-Source0:        ipxe-reconfigure.tar.gz
+Source0:        %{name}-%{version}.tar.gz
 
 Requires:       bash
 
@@ -41,6 +41,9 @@ ipxe-reconfigure
 
 
 %changelog
+* Fri Oct 06 2023 Shaun Keys <mariobuddy@gmail.com> 0.4-1
+- 
+
 * Fri Oct 06 2023 Shaun Keys <mariobuddy@gmail.com> 0.3-1
 - new package built with tito
 
