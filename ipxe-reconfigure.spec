@@ -1,5 +1,5 @@
 Name:           ipxe-reconfigure
-Version:        0.4
+Version:        0.5
 Release:        1%{?dist}
 Summary:        Reconfigures the ipxe boot script upon kernel update
 
@@ -37,6 +37,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/lib/kernel/install.d/99-ipxe-reconfigure.install
 
 %changelog
+* Wed Oct 11 2023 Shaun Keys <mariobuddy@gmail.com> 0.5-1
+- Remove triggerin and use install instead of cp (mariobuddy@gmail.com)
+
 * Fri Oct 06 2023 Shaun Keys <mariobuddy@gmail.com> 0.4-1
 - 
 
