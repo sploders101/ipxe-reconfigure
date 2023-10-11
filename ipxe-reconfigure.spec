@@ -24,9 +24,9 @@ Reconfigures the ipxe boot script upon kernel update
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
-cp ipxe-reconfigure $RPM_BUILD_ROOT/%{_bindir}
+install -m 0755 ipxe-reconfigure $RPM_BUILD_ROOT/%{_bindir}
 mkdir -p ${RPM_BUILD_ROOT}/usr/lib/kernel/install.d
-cp 99-ipxe-reconfigure.install ${RPM_BUILD_ROOT}/usr/lib/kernel/install.d/99-ipxe-reconfigure.install
+install -m 0755 99-ipxe-reconfigure.install ${RPM_BUILD_ROOT}/usr/lib/kernel/install.d/99-ipxe-reconfigure.install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -35,10 +35,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %{_bindir}/ipxe-reconfigure
 /usr/lib/kernel/install.d/99-ipxe-reconfigure.install
-
-%triggerin -- kernel-core
-ipxe-reconfigure
-
 
 %changelog
 * Fri Oct 06 2023 Shaun Keys <mariobuddy@gmail.com> 0.4-1
